@@ -20,7 +20,7 @@ REM //
 set SIZ_NTTREE=W:\Binaries\NT.trunk
 
 REM //
-REM // SIZ_NTARCH: Target build architecture [x86, amd64, arm, mips, alpha, ppc]
+REM // SIZ_NTARCH: Target build architecture [x86, amd64, arm, arm64, mips, alpha, ppc]
 REM //
 
 set SIZ_NTARCH=x86

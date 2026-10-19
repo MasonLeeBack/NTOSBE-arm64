@@ -33,12 +33,13 @@ REM // Validate BuildArch.
 if not [%_BuildArch%] equ [x86] (
 if not [%_BuildArch%] equ [amd64] (
 if not [%_BuildArch%] equ [arm] (
+if not [%_BuildArch%] equ [arm64] (
 if not [%_BuildArch%] equ [mips] (
 if not [%_BuildArch%] equ [alpha] (
 if not [%_BuildArch%] equ [ppc] (
     echo Invalid BuildArch.
     goto End
-))))))
+)))))))
 
 REM // Validate BuildType.
 if not [%_BuildType%] equ [chk] (
@@ -152,6 +153,16 @@ set BEREPOIDW=%BETOOLS%\idw\%_RepoName%
 set BEPERL=%BETOOLS%\perl\bin
 
 REM //
+REM // Cross compilation only provides the target compiler tools. The IDW
+REM // tools run natively on the build host, so use them instead.
+REM //
+
+if /i not "%BETOOLS%" equ "%BEROOT%\tools\%NTARCH%" (
+    set BEIDW=%BEROOT%\tools\%PROCESSOR_ARCHITECTURE%\idw
+    set BEREPOIDW=%BEROOT%\tools\%PROCESSOR_ARCHITECTURE%\idw\%_RepoName%
+)
+
+REM //
 REM // Check if there exists a repository-specific IDW tools directory.
 REM //
 
@@ -223,7 +234,7 @@ REM //
     echo  RepoName    = Repository name
     echo  NtRootPath  = NT source tree path
     echo  BinRootPath = Binary output tree path
-    echo  BuildArch   = { x86, amd64, arm, mips, alpha, ppc }
+    echo  BuildArch   = { x86, amd64, arm, arm64, mips, alpha, ppc }
     echo  BuildType   = { fre, chk }
     echo.
     echo Example:

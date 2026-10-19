@@ -16,6 +16,16 @@ if [%NTROOT%] equ [] (
 )
 
 REM //
+REM // Verify that the sizzle environment is native. A cross build environment
+REM // would build the IDW tools for the target instead of the build host.
+REM //
+
+if /i not "%BETOOLS%" equ "%BEROOT%\tools\%NTARCH%" (
+    echo You must run this script under a native sizzle environment.
+    goto End
+)
+
+REM //
 REM // Display build information.
 REM //
 
