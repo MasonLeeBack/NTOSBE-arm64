@@ -42,6 +42,8 @@
         (t)->ChildTarget = Amd64TargetMachine.Description;      \
     else if (strstr( p, "ia64") || strstr( p, "IA64"))          \
         (t)->ChildTarget = Ia64TargetMachine.Description;       \
+    else if (strstr( p, "arm64") || strstr( p, "ARM64"))        \
+        (t)->ChildTarget = Arm64TargetMachine.Description;      \
     else if (strstr( p, "arm") || strstr( p, "ARM"))            \
         (t)->ChildTarget = ArmTargetMachine.Description;        \
     else if (strstr( p, "axp64") || strstr( p, "AXP64"))        \

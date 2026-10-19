@@ -97,7 +97,8 @@ BOOL VerifyFinalImage(IN  PCHAR  FileName,
 
         if ( !tlb && (LoadedImage.FileHeader->FileHeader.Machine != IMAGE_FILE_MACHINE_I386) &&
              (LoadedImage.FileHeader->FileHeader.Machine != IMAGE_FILE_MACHINE_AMD64) &&
-             (LoadedImage.FileHeader->FileHeader.Machine != IMAGE_FILE_MACHINE_IA64) ) {
+             (LoadedImage.FileHeader->FileHeader.Machine != IMAGE_FILE_MACHINE_IA64) &&
+             (LoadedImage.FileHeader->FileHeader.Machine != IMAGE_FILE_MACHINE_ARM64) ) {
              goto End2;
         }
 

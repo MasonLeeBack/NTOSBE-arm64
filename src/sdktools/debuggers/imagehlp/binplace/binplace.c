@@ -224,6 +224,13 @@ CLASS_TABLE Amd64SpecificClassTable[] = {
     {NULL,NULL}
 };
 
+CLASS_TABLE Arm64SpecificClassTable[] = {
+    {"hal",".."},
+    {"printer","system32\\spool\\drivers\\w32arm64"},
+    {"prtprocs","system32\\spool\\prtprocs\\w32arm64"},
+    {NULL,NULL}
+};
+
 CLASS_TABLE ia64SpecificClassTable[] = {
     {"hal",".."},
     {"printer","system32\\spool\\drivers\\w32ia64"},
@@ -358,8 +365,13 @@ main(
     //
 
 #if defined(_AMD64_)
-    ImageCheck.Machine = IMAGE_FILE_MACHINE_AMD64;
-    PlaceRootName = getenv( "NTAMD64TREE" );
+    if ((platform = getenv("ARM64")) != NULL) {
+        ImageCheck.Machine = IMAGE_FILE_MACHINE_ARM64;
+        PlaceRootName = getenv( "NTARM64TREE" );
+    } else {
+        ImageCheck.Machine = IMAGE_FILE_MACHINE_AMD64;
+        PlaceRootName = getenv( "NTAMD64TREE" );
+    }
 #elif defined(_IA64_)
     ImageCheck.Machine = IMAGE_FILE_MACHINE_IA64;
     PlaceRootName = getenv( "NTIA64TREE" );
@@ -370,6 +382,9 @@ main(
     } else if ((platform = getenv("IA64")) != NULL) {
         ImageCheck.Machine = IMAGE_FILE_MACHINE_IA64;
         PlaceRootName = getenv( "NTIA64TREE" );
+    } else if ((platform = getenv("ARM64")) != NULL) {
+        ImageCheck.Machine = IMAGE_FILE_MACHINE_ARM64;
+        PlaceRootName = getenv( "NTARM64TREE" );
     } else {
         ImageCheck.Machine = IMAGE_FILE_MACHINE_I386;
         PlaceRootName = getenv( "NTX86TREE" );
@@ -800,6 +815,7 @@ main(
                      "   NTX86TREE - default value for -r flag on x86 platform\n"
                      "   NTAMD64TREE - default value for -r flag on AMD64 platform\n"
                      "   NTIA64TREE - default value for -r flag on IA64 platform\n"
+                     "   NTARM64TREE - default value for -r flag on ARM64 platform\n"
                      "   TRACE_FORMAT_PATH - set the path for Trace Format Files\n"
                      "\n"
                      ,stderr
@@ -1110,6 +1126,9 @@ DoTheWork:
 
 #if   defined(_AMD64_)
                         ClassTablePointer = &Amd64SpecificClassTable[0];
+                        if ((platform = getenv("ARM64")) != NULL) {
+                            ClassTablePointer = &Arm64SpecificClassTable[0];
+                        }
 #elif defined(_IA64_)
                         ClassTablePointer = &ia64SpecificClassTable[0];
 #else // defined(_X86_)
@@ -1118,6 +1137,8 @@ DoTheWork:
                             ClassTablePointer = &Amd64SpecificClassTable[0];
                         } else if ((platform = getenv("IA64")) != NULL) {
                             ClassTablePointer = &ia64SpecificClassTable[0];
+                        } else if ((platform = getenv("ARM64")) != NULL) {
+                            ClassTablePointer = &Arm64SpecificClassTable[0];
                         }
 #endif
                         while (ClassTablePointer->ClassName) {
@@ -1155,6 +1176,9 @@ DoTheWork:
 #if   defined(_AMD64_)
                             PlatformSize = 5;
                             PlatformPath = TEXT("amd64");
+                            if ((platform = getenv("ARM64")) != NULL) {
+                                PlatformPath = TEXT("arm64");
+                            }
 #elif defined(_IA64_)
                             PlatformSize = 4;
                             PlatformPath = TEXT("ia64");
@@ -1166,6 +1190,9 @@ DoTheWork:
                             } else if ((platform = getenv("AMD64")) != NULL) {
                                 PlatformSize = 5;
                                 PlatformPath = TEXT("amd64");
+                            } else if ((platform = getenv("ARM64")) != NULL) {
+                                PlatformSize = 5;
+                                PlatformPath = TEXT("arm64");
                             }
 #endif
                             *asterisk = '\0';

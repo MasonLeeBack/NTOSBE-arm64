@@ -79,6 +79,13 @@ TARGET_MACHINE_INFO ArmTargetMachine = {
     DIR_INCLUDE_ARM | DIR_INCLUDE_RISC | DIR_INCLUDE_WIN32
 };
 
+TARGET_MACHINE_INFO Arm64TargetMachine = {
+    TMIDIR_ARM, "Arm64", "-arm64", "ARM64=1",
+    "ARM64_SOURCES", "ARM64_OBJECTS", "arm64",
+    "arm64", "arm64dirs", { "arm64" },
+    DIR_INCLUDE_ARM64 | DIR_INCLUDE_RISC | DIR_INCLUDE_WIN64
+};
+
 TARGET_MACHINE_INFO Axp64TargetMachine = {
     TMIDIR_AXP64, "Axp64", "-axp64", "AXP64=1",
     "AXP64_SOURCES", "AXP64_OBJECTS", "axp64",
@@ -99,6 +106,7 @@ TARGET_MACHINE_INFO *PossibleTargetMachines[MAX_TARGET_MACHINES] = {
     &Ia64TargetMachine,
     &ArmTargetMachine,
     &Axp64TargetMachine,
+    &Arm64TargetMachine,
     // If adding a new machine, leave DynamicTargetMachine last
     &DynamicTargetMachine
 };
@@ -249,6 +257,7 @@ const char szUsage[] =
     "\t[-ia64] build targets for IA64\n"
     "\t[-arm] build targets for ARM\n"
     "\t[-axp64] build targets for AXP64\n"
+    "\t[-arm64] build targets for ARM64\n"
     "\t[-dynamic machine] build targets for machine given\n"
     "\n"
     "\t[-x filename] exclude include file from dependency checks\n"

@@ -2333,6 +2333,8 @@ FixDirInclude(PDIRREC DirDB, LPSTR dirbuf, LPSTR* pp)
                     DirInclude |= DIR_INCLUDE_IA64;
                 } else if (!_stricmp(token, "AMD64")) {
                     DirInclude |= DIR_INCLUDE_AMD64;
+                } else if (!_stricmp(token, "ARM64")) {
+                    DirInclude |= DIR_INCLUDE_ARM64;
                 } else if (!_stricmp(token, "RISC")) {
                     DirInclude |= DIR_INCLUDE_RISC;
                 } else if (!_stricmp(token, DynamicProcessor)) {

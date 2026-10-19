@@ -95,7 +95,7 @@ LPSTR FindLastPathSeparator(LPSTR str);
 
 extern LPSTR pszTargetDirs;
 
-#define MAX_TARGET_MACHINES 9
+#define MAX_TARGET_MACHINES 10
 #define MAX_BUILD_PHASES 4
 #define MAX_BUILD_PHASE_STRING_LENGTH 2
 
@@ -105,7 +105,7 @@ extern LPSTR pszTargetDirs;
 typedef unsigned short TMIDIR_t;
 
 typedef struct _TARGET_MACHINE_INFO {
-    UCHAR SourceSubDirMask;     // TMIDIR_X86
+    TMIDIR_t SourceSubDirMask;     // TMIDIR_X86
     LPSTR Description;          // "x86"
     LPSTR Switch;               // "-x86"
     LPSTR MakeVariable;         // "X86=1"
@@ -145,6 +145,7 @@ typedef union DOS_TIME {
 #define DIR_INCLUDE_WIN64    0x00000200
 #define DIR_INCLUDE_RISC     0x00000400
 #define DIR_INCLUDE_DYNAMIC  0x00000800
+#define DIR_INCLUDE_ARM64    0x00001000
 #define DIR_INCLUDE_ALL      0xffffffff
 
 // If dynamic command line argument is used then these variables store platform information.
@@ -164,6 +165,7 @@ extern UINT MaxInitializedTargets;
 //      ia64\foo.c             0020
 //      arm\foo.c              0040
 //      axp64\foo.c            0080
+//      arm64\foo.d            0200
 //      ..\foo.c               8000
 //      ..\x86\foo.c           8001
 //      ..\mips\foo.c          8002
@@ -173,6 +175,7 @@ extern UINT MaxInitializedTargets;
 //      ..\ia64\foo.c          8020
 //      ..\arm\foo.c           8040
 //      ..\axp64\foo.c         8080
+//      ..\arm64\foo.c         8200
 
 #define TMIDIR_X86      ((TMIDIR_t)0x0001)
 #define TMIDIR_MIPS     ((TMIDIR_t)0x0002)
@@ -183,6 +186,7 @@ extern UINT MaxInitializedTargets;
 #define TMIDIR_ARM      ((TMIDIR_t)0x0040)
 #define TMIDIR_AXP64    ((TMIDIR_t)0x0080)
 #define TMIDIR_DYNAMIC  ((TMIDIR_t)0x0100)
+#define TMIDIR_ARM64    ((TMIDIR_t)0x0200)
 #define TMIDIR_PARENT   ((TMIDIR_t)0x8000)  // or'd in with above bits
 
 
@@ -677,6 +681,7 @@ extern TARGET_MACHINE_INFO Amd64TargetMachine;
 extern TARGET_MACHINE_INFO Ia64TargetMachine;
 extern TARGET_MACHINE_INFO ArmTargetMachine;
 extern TARGET_MACHINE_INFO Axp64TargetMachine;
+extern TARGET_MACHINE_INFO Arm64TargetMachine;
 extern TARGET_MACHINE_INFO DynamicTargetMachine;
 UINT TargetToPossibleTarget[MAX_TARGET_MACHINES];
 TARGET_MACHINE_INFO *pPhase0TargetMachine;
