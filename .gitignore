@@ -16,3 +16,4 @@ buildchk.err
 /src/build.dat
 /tools/amd64/idw/*
 /tools/x86/idw/*
+/src/sdktools/debuggers/dbglibs/
