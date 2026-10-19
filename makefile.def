@@ -31,12 +31,12 @@ Targets:
 
 Useful Variables Set:
 
-    CPUTYPE={X86|AXP64|ALPHA|MPPC|IA64|AMD64|ARM}
+    CPUTYPE={X86|AXP64|ALPHA|MPPC|IA64|AMD64|ARM|ARM64}
 
 Optional Controls Variables (partial list), these are environment variables,
 remember they can be set with env=value on the command line as well:
 
-NOTE:  xxx_... is {MSC|X86|AXP64|MPPC|IA64|AMD64|ARM} where MSC_ applies to the C8 compiler
+NOTE:  xxx_... is {MSC|X86|AXP64|MPPC|IA64|AMD64|ARM|ARM64} where MSC_ applies to the C8 compiler
        independent of the cpu type.  Specific cpu_ will take precedence
        over the equivalent MSC_ variable.
 
@@ -1216,7 +1216,7 @@ COFFBASE_TXT_FILE = $(NTMAKEENV)\coffbase.txt
 UMBASE=@$(COFFBASE_TXT_FILE),$(COFFBASE)
 ! ELSE
 !  if $(WIN64)
-!    if $(AMD64)
+!    if $(AMD64) || $(ARM64)
 UMBASE=@$(COFFBASE_TXT_FILE),usermode64
 !    else
 #     Enable this for IA64 too
@@ -2233,6 +2233,9 @@ DLLLIBOBJECTS=$(DLLLIBOBJECTS) $(AMD64_DLLLIBOBJECTS)
 !ELSEIF $(ARM)
 OBJECTS=$(ARM_OBJECTS)
 DLLLIBOBJECTS=$(DLLLIBOBJECTS) $(ARM_DLLLIBOBJECTS)
+!ELSEIF $(ARM64)
+OBJECTS=$(ARM64_OBJECTS)
+DLLLIBOBJECTS=$(DLLLIBOBJECTS) $(ARM64_DLLLIBOBJECTS)
 !ENDIF
 
 !ifdef MAC_RESOURCE
@@ -2761,7 +2764,7 @@ LINK_LIB_IGNORE_FLAG=-IGNORE:$(LINK_LIB_IGNORE),$(DEFAULT_LINK_LIB_IGNORE)
 LINK_LIB_IGNORE_FLAG=-IGNORE:$(DEFAULT_LINK_LIB_IGNORE)
 !endif
 
-!IF $(IA64) || $(AMD64)
+!IF $(IA64) || $(AMD64) || $(ARM64)
 LINK_LIB_IGNORE_FLAG= $(LINK_LIB_IGNORE_FLAG),4108,4088,4218
 !ENDIF
 
@@ -2987,7 +2990,7 @@ KERNEL_ALIGNMENT=0x80
 ! endif
 !endif
 
-!if $(AMD64)
+!if $(AMD64) || $(ARM64)
 !ifdef DRIVER_ALIGNMENT
 DRIVER_ALIGN_SWITCH=-align:$(DRIVER_ALIGNMENT)
 !endif
@@ -3126,7 +3129,7 @@ LINT_CMD2=
 # Standard inference rules for C files that produce object files.
 #
 
-!if $(AMD64)
+!if $(AMD64) || $(ARM64)
 .SUFFIXES:
 !endif
 
@@ -3140,7 +3143,7 @@ LINT_CMD2=
 # Make IA64 LKG6 the default.
 #
 
-!if $(IA64) || $(AMD64)
+!if $(IA64) || $(AMD64) || $(ARM64)
 LKG6COMPILER=1
 !endif
 
@@ -3377,6 +3380,8 @@ PASS0_OBJECTS=$(PASS0_IA64_OBJECTS)
 PASS0_OBJECTS=$(PASS0_AMD64_OBJECTS)
 ! ELSEIF $(ARM)
 PASS0_OBJECTS=$(PASS0_ARM_OBJECTS)
+! ELSEIF $(ARM64)
+PASS0_OBJECTS=$(PASS0_ARM64_OBJECTS)
 ! ENDIF
 
 !ENDIF  # IFNDEF NOPASS0
